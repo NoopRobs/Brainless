@@ -185,11 +185,6 @@ am send-trim-memory --user 0 com.android.systemui RUNNING_CRITICAL
  fi
 
 
-if $launch ; then
-    results+=($(launch_app))   
-fi
-
-
 # Set system properties for performance
 setprop debug.sf.hw 1
 setprop debug.egl.hw 1
