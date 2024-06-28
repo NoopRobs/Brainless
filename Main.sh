@@ -1,5 +1,3 @@
-#!/system/bin/sh
-
 pkg=("com.mobile.legends" "com.mobilelegendsmi" "com.mobilelegends.hwag" "com.mobilelegends.taptest" "com.dfjz.moba")
 
 
