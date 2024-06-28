@@ -81,35 +81,6 @@ fi
 launch=true
 
 
-cat << "EOF"
-=============================================
-|| ML Quick Launcher Created by @Brainless ||
-=============================================
-
-       __   __          ___        
- |\/| /  \ |__) | |    |__         
- |  | \__/ |__) | |___ |___        
-                                   
-      ___  __   ___       __   __  
-|    |__  / _` |__  |\ | |  \ /__` 
-|___ |___ \__> |___ | \| |__/ .__/ 
-                                                                                                                               
-Version 3.5
-
-=============================================
-Downscale option :
-0.5
-0.7
-disable
-=============================================
-Function Option :
-"-vk" > use render 
-"-cbg" > compile all app that hasn't compiled yet
-"-dbs" > delete all debugs value
-"-sk" > skip quick launch function
-=============================================
-EOF
-
 echo "[ Game Discovered as > $game ]"
 echo ""
 
