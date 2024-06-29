@@ -200,10 +200,6 @@ cmd power set-mode 0
 cmd thermalservice override-status 0
 cmd looper_stats disable
 
-if $launch ; then
-    results+=($(launch_app))   
-fi
-
 
 if pgrep -f "$game" > /dev/null;then
    am clear-watch-heap $game 
