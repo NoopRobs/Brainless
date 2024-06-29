@@ -1,16 +1,4 @@
-dos2unix data
-source data
-cd $(dirname "$0")
-
-brainless_core=$(cat <<-EOF
-data {
-  key:package="$pkg"
-}
-EOF
-)
-
-found_packages=()
-for package in "${package[@]}"; do
+for package in "${runPackage[@]}"; do
     if pm list packages | grep -q "$package"; then
         found_packages+=("$package")        
     fi
