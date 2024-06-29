@@ -1,6 +1,6 @@
 pkg=("com.mobile.legends" "com.mobilelegendsmi" "com.mobilelegends.hwag" "com.mobilelegends.taptest" "com.dfjz.moba")
 
-for package in "${runPackage[@]}"; do
+for package in "${pkg[@]}"; do
     if pm list packages | grep -q "$package"; then
         found_packages+=("$package")        
     fi
