@@ -1,10 +1,12 @@
+pkg=("com.mobile.legends" "com.mobilelegendsmi" "com.mobilelegends.hwag" "com.mobilelegends.taptest" "com.dfjz.moba")
+
+
 found_packages=()
 for package in "${pkg[@]}"; do
     if pm list packages | grep -q "$package"; then
-        found_packages+=("$package")
+        found_packages+=("$package")        
     fi
 done
-
 
 game="${found_packages[0]}"
 id=($(cmd package dump "$game" | awk '/MAIN/{getline; print $2}'))
