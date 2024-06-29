@@ -1,9 +1,11 @@
 source data
 
-data () {
+
+data=$(cat <<-EOF
     pkg="$pkg"
 }
-
+EOF
+)
 
 found_packages=()
 for package in "${pkg[@]}"; do
