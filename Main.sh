@@ -1,5 +1,4 @@
-source run.sh
-pkg=($(grep -r -i 'pkg' run.sh))
+source data
 
 found_packages=()
 for package in "${pkg[@]}"; do
