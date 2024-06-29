@@ -1,8 +1,10 @@
+dos2unix data
 source data
+cd $(dirname "$0")
 
-
-data=$(cat <<-EOF
-    pkg="$pkg"
+brainless_core=$(cat <<-EOF
+data {
+  key:pkg="$pkg"
 }
 EOF
 )
