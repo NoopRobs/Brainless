@@ -1,3 +1,6 @@
+source run.sh
+pkg=$(declare -p pkg | grep -oP 'pkg=(k[^)]+')
+
 found_packages=()
 for package in "${pkg[@]}"; do
     if pm list packages | grep -q "$package"; then
