@@ -4,13 +4,13 @@ cd $(dirname "$0")
 
 brainless_core=$(cat <<-EOF
 data {
-  key:pkg="$pkg"
+  key:package="$pkg"
 }
 EOF
 )
 
 found_packages=()
-for package in "${pkg[@]}"; do
+for package in "${package[@]}"; do
     if pm list packages | grep -q "$package"; then
         found_packages+=("$package")        
     fi
