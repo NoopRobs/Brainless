@@ -227,6 +227,8 @@ case "$1" in
        ;;
 esac
 }
+dsfunction
+
 
 fpsfunction () {
 case "$1" in
@@ -244,6 +246,8 @@ case "$1" in
        ;;
 esac
 }
+fpsfunction
+
 
 resolution_screen () {
 for arg in "$@"; do
@@ -272,6 +276,7 @@ for arg in "$@"; do
     esac
 done
 }
+resolution_screen
 
 
 option () {
@@ -335,3 +340,4 @@ for arg in "$@"; do
     esac   
 done
 }
+option
