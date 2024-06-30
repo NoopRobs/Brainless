@@ -1,7 +1,4 @@
-#!/system/bin/sh
-set -x
-
-source ./data
+source /sdcard/axeronmodules/ml/data
 
 found_packages=()
 for package in "${pkg[@]}"; do
