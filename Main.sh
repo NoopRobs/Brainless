@@ -1,28 +1,24 @@
 pkg=("com.mobile.legends" "com.mobilelegendsmi" "com.mobilelegends.hwag" "com.mobilelegends.taptest" "com.dfjz.moba")
 
 
-found_packages=()
+found_packages=() {
 for package in "${pkg[@]}"; do
     if pm list packages | grep -q "$package"; then
         found_packages+=("$package")        
     fi
 done
+}
+
 
 game="${found_packages[0]}"
 id=($(cmd package dump "$game" | awk '/MAIN/{getline; print $2}'))
 status=$(am get-standby-bucket "$game")
-
-
 fps=($(settings get global fps))
 downscale=($(settings get global downscale))
-
 renderer=$(getprop debug.hwui.renderer)
 renderengine=$(getprop debug.renderengine.backend)
-
 size=$(wm size)
 density=$(wm density)
-
-
 width=$(echo $size | cut -d 'x' -f 1)
 height=$(echo $size | cut -d 'x' -f 2)
 
@@ -105,17 +101,14 @@ else
     echo "[ Failed to reset all App Throttles! ]"
 fi
 
-# Clear caches
-pm trim-caches 999G &
 
-# Set device to idle
 {
     dumpsys deviceidle enable
     dumpsys deviceidle force-idle
     dumpsys deviceidle step deep
 } > /dev/null
 
-# Check and add game to whitelist if necessary
+deviceidle() {
 if dumpsys deviceidle | grep -q "$game"; then
     echo "[ $game already in whitelist ]"
 else
@@ -124,9 +117,9 @@ else
     cmd deviceidle whitelist +$game > /dev/null
     echo "[ $game Added to Whitelist. ]"
 fi
-
+}
                   
-# Compile system ui
+Compile_ui() {
 cmd package compile -m quicken -f com.android.systemui > /dev/null
     if [ $? -eq 0 ]; then
         echo "[ $game is Compiled ! ]"
@@ -138,7 +131,7 @@ cmd package compile -m quicken -f com.android.systemui > /dev/null
             echo "[ Can't Compile App or packagename not found! ]"
         fi
     fi
-
+}
 
 # Apply device config
 device_config delete game_overlay "$game" > /dev/null
@@ -184,7 +177,7 @@ am send-trim-memory --user 0 com.android.systemui RUNNING_CRITICAL
  fi
 
 
-# Set system properties for performance
+setprops() {
 setprop debug.sf.hw 1
 setprop debug.egl.hw 1
 setprop debug.egl.sync 0
@@ -199,7 +192,7 @@ cmd power set-fixed-performance-mode-enabled true
 cmd power set-mode 0
 cmd thermalservice override-status 0
 cmd looper_stats disable
-
+}
 
 if pgrep -f "$game" > /dev/null;then
    am clear-watch-heap $game 
