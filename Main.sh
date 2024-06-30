@@ -1,3 +1,6 @@
+#!/system/bin/sh
+set -x
+
 source ./data
 
 found_packages=()
