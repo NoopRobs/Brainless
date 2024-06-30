@@ -23,7 +23,7 @@ height=$(echo $size | cut -d 'x' -f 2)
 
 launch_app () {
 if ls /sdcard/android/data/$game/files/dragon2017/assets/comlibs/armeabi-v7a; then
-   am start -D -N -S --user 0 "${id[0]}" --es --windowingMode 1 --no-window-animation --abi ARMEABI-V7A --splashscreen-icon
+   am start -D -N -S --user 0 "${id[0]}" --es --windowingMode 1 --no-window-animation --abi armeabi-v7a --splashscreen-icon
       if [ $? -eq 0 ]; then
          cmd notification post -S bigtext -t 'MLQL · Laxeron' 'Executed' 'Starting Mobile Legends with Armeabi-v7a !' > /dev/null 2>&1 &
      else
@@ -150,7 +150,6 @@ else
 fi
 
 
-# Set standby mode
 if [ "$status" -ne 10 ]; then
     am set-standby-bucket "$game" 10
     if [ $? -eq 0 ]; then
