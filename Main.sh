@@ -8,7 +8,6 @@ for package in "${pkg[@]}"; do
 done
 
 
-resource() {
 game="${found_packages[0]}"
 id=($(cmd package dump "$game" | awk '/MAIN/{getline; print $2}'))
 status=$(am get-standby-bucket "$game")
@@ -20,7 +19,6 @@ size=$(wm size)
 density=$(wm density)
 width=$(echo $size | cut -d 'x' -f 1)
 height=$(echo $size | cut -d 'x' -f 2)
-}
 
 
 launch_app () {
