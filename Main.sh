@@ -1,4 +1,3 @@
-#!/system/bin/sh
 # Dev Brainless / NoopRobs
 
 cd $(dirname $0)
