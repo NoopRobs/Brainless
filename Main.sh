@@ -1,6 +1,6 @@
 # Dev Brainless / NoopRobs
 
-cd $(dirname $0)
+$(dirname $0)
 dos2unix data.prop
 source data.prop
 
