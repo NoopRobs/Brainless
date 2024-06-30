@@ -1,13 +1,11 @@
-pkg=("com.mobile.legends" "com.mobilelegendsmi" "com.mobilelegends.hwag" "com.mobilelegends.taptest" "com.dfjz.moba")
+source ./data
 
-
-found_packages=() {
+found_packages=()
 for package in "${pkg[@]}"; do
     if pm list packages | grep -q "$package"; then
         found_packages+=("$package")        
     fi
 done
-}
 
 
 game="${found_packages[0]}"
@@ -84,7 +82,6 @@ else
 fi
 
 
-# Reset app throttling
 cmd shortcut reset-throttling "$game" > /dev/null
 if [ $? -eq 0 ]; then
     echo "[ Reset Throttle for app and users ! ]"
@@ -108,7 +105,7 @@ fi
     dumpsys deviceidle step deep
 } > /dev/null
 
-deviceidle() {
+
 if dumpsys deviceidle | grep -q "$game"; then
     echo "[ $game already in whitelist ]"
 else
@@ -117,9 +114,8 @@ else
     cmd deviceidle whitelist +$game > /dev/null
     echo "[ $game Added to Whitelist. ]"
 fi
-}
+
                   
-Compile_ui() {
 cmd package compile -m quicken -f com.android.systemui > /dev/null
     if [ $? -eq 0 ]; then
         echo "[ $game is Compiled ! ]"
@@ -131,9 +127,8 @@ cmd package compile -m quicken -f com.android.systemui > /dev/null
             echo "[ Can't Compile App or packagename not found! ]"
         fi
     fi
-}
 
-# Apply device config
+
 device_config delete game_overlay "$game" > /dev/null
   if [ $? -eq 0 ]; then  
      device_config put game_overlay "$game" mode=2,fps="$fps",downscaleFactor="$downscale"
@@ -143,7 +138,6 @@ device_config delete game_overlay "$game" > /dev/null
   fi
     
 
-# Set game mode and performance settings
 if [ -z "$cmdgame" ]; then
      echo "[ Cmd Game not supported on this Device! ]"
 else
