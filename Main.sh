@@ -1,8 +1,8 @@
 # Dev Brainless / NoopRobs
 
 cd $(dirname $0)
-dos2unix data.prop
-source data.prop
+dos2unix data
+source data
 
 found_packages=()
 for package in "${pkg[@]}"; do
