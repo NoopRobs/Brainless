@@ -82,7 +82,7 @@ else
     echo ""
 fi
 
-throttle_reset () {
+
 cmd shortcut reset-throttling "$game" > /dev/null
 if [ $? -eq 0 ]; then
     echo "[ Reset Throttle for app and users ! ]"
@@ -98,7 +98,6 @@ if [ $? -eq 0 ]; then
 else
     echo "[ Failed to reset all App Throttles! ]"
 fi
-}
 
 
 {
@@ -107,7 +106,7 @@ fi
     dumpsys deviceidle step deep
 } > /dev/null
 
-device_idle () {
+
 if dumpsys deviceidle | grep -q "$game"; then
     echo "[ $game already in whitelist ]"
 else
@@ -116,10 +115,9 @@ else
     cmd deviceidle whitelist +$game > /dev/null
     echo "[ $game Added to Whitelist. ]"
 fi
-}
 
 
-compile_systemui () {
+
 cmd package compile -m quicken -f com.android.systemui > /dev/null
     if [ $? -eq 0 ]; then
         echo "[ $game is Compiled ! ]"
@@ -131,10 +129,9 @@ cmd package compile -m quicken -f com.android.systemui > /dev/null
             echo "[ Can't Compile App or packagename not found! ]"
         fi
     fi
-}
 
 
-device_config() {
+
 device_config delete game_overlay "$game" > /dev/null
   if [ $? -eq 0 ]; then  
      device_config put game_overlay "$game" mode=2,fps="$fps",downscaleFactor="$downscale"
@@ -142,10 +139,8 @@ device_config delete game_overlay "$game" > /dev/null
      echo "[ Can't Apply game_overlay or Error ! ]"
      echo ""
   fi
-}
 
 
-cmd_game () {
 if [ -z "$cmdgame" ]; then
      echo "[ Cmd Game not supported on this Device! ]"
 else
@@ -156,10 +151,8 @@ else
                echo "[ Cmd Game not supported on this Device! ]"
           fi
 fi
-}
 
 
-standby_mode() {
 if [ "$status" -ne 10 ]; then
     am set-standby-bucket "$game" 10
     if [ $? -eq 0 ]; then
@@ -178,7 +171,7 @@ am send-trim-memory --user 0 com.android.systemui RUNNING_CRITICAL
  else
    echo "[ Error Optimize SystemUi ! ]"
  fi
-}
+
 
 setprops() {
 setprop debug.sf.hw 1
