@@ -26,26 +26,6 @@ width=$(echo $size | cut -d 'x' -f 1)
 height=$(echo $size | cut -d 'x' -f 2)
 
 
-Launch_app () {
-if ls /sdcard/android/data/$game/files/dragon2017/assets/comlibs/armeabi-v7a; then
-   am start -D -N -S --user 0 "${id[0]}" --es --windowingMode 1 --no-window-animation --abi armeabi-v7a --splashscreen-icon
-      if [ $? -eq 0 ]; then
-         cmd notification post -S bigtext -t 'MLQL · Laxeron' 'Executed' 'Starting Mobile Legends with Armeabi-v7a !' > /dev/null 2>&1 &
-     else
-         echo "[ Can't start app or Error ! ]"
-     fi
-else
-    am start -D -N -S --user 0 "${id[0]}" --es --windowingMode 1 --no-window-animation
-       if [ $? -eq 0 ]; then
-         cmd notification post -S bigtext -t 'MLQL · Laxeron' 'Executed' 'Starting APP, Enjoy your games !' > /dev/null 2>&1 &
-     else
-         echo "[ Can't start app or Error ! ]"
-     fi
-fi
-}
-Launch=true
-
-
 echo "[ Game Discovered as > $game ]"
 echo ""
 
