@@ -1,9 +1,5 @@
 # Dev Brainless / NoopRobs
 
-cd $(dirname $0)
-dos2unix data
-source data
-
 Launch_app () {
    am start -D -N -S --user 0 "${id[0]}" --es --windowingMode 1 --no-window-animation --abi ARMEABI-V7A --splashscreen-icon
       if [ $? -eq 0 ]; then
