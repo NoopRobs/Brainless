@@ -1,20 +1,7 @@
 # Dev Brainless / NoopRobs
 
-Launch_app () {
-   am start -D -N -S --user 0 "${id[0]}" --es --windowingMode 1 --no-window-animation --abi ARMEABI-V7A --splashscreen-icon
-      if [ $? -eq 0 ]; then
-         cmd notification post -S bigtext -t 'MLQL · Laxeron' 'Executed' 'Starting Mobile Legends with Armeabi-v7a !' > /dev/null 2>&1 &
-     else
-         am start -D -N -S --user 0 "${id[0]}" --es --windowingMode 1 --no-window-animation
-             if [ $? -eq 0 ]; then
-                cmd notification post -S bigtext -t 'MLQL · Laxeron' 'Executed' 'Starting APP, Enjoy your games !' > /dev/null 2>&1 &
-             else
-                echo "[ Can't start app or Error ! ]"
-             fi
-     fi
-}
-Launch=true
-
+cd $(dirname $0)
+source data
 
 found_packages=()
 for package in "${pkg[@]}"; do
@@ -36,6 +23,21 @@ density=$(wm density)
 width=$(echo $size | cut -d 'x' -f 1)
 height=$(echo $size | cut -d 'x' -f 2)
 
+
+Launch_app () {
+   am start -D -N -S --user 0 "${id[0]}" --es --windowingMode 1 --no-window-animation --abi ARMEABI-V7A --splashscreen-icon
+      if [ $? -eq 0 ]; then
+         cmd notification post -S bigtext -t 'MLQL · Laxeron' 'Executed' 'Starting Mobile Legends with Armeabi-v7a !' > /dev/null 2>&1 &
+     else
+         am start -D -N -S --user 0 "${id[0]}" --es --windowingMode 1 --no-window-animation
+             if [ $? -eq 0 ]; then
+                cmd notification post -S bigtext -t 'MLQL · Laxeron' 'Executed' 'Starting APP, Enjoy your games !' > /dev/null 2>&1 &
+             else
+                echo "[ Can't start app or Error ! ]"
+             fi
+     fi
+}
+Launch=true
 
 echo "[ Game Discovered as > $game ]"
 echo ""
