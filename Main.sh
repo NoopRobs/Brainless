@@ -1,8 +1,5 @@
 # Dev Brainless / NoopRobs
 
-cd $(dirname $0)
-source data
-
 found_packages=()
 for package in "${pkg[@]}"; do
     if pm list packages | grep -q "$package"; then
