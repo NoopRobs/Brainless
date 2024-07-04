@@ -24,7 +24,7 @@ width=$(echo $size | cut -d 'x' -f 1)
 height=$(echo $size | cut -d 'x' -f 2)
 
 
-Launch_app () {
+launch_app () {
    am start -D -N -S --user 0 "${id[0]}" --es --windowingMode 1 --no-window-animation --abi ARMEABI-V7A --splashscreen-icon
       if [ $? -eq 0 ]; then
          cmd notification post -S bigtext -t 'MLQL · Laxeron' 'Executed' 'Starting Mobile Legends with Armeabi-v7a !' > /dev/null 2>&1 &
@@ -37,7 +37,7 @@ Launch_app () {
              fi
      fi
 }
-Launch=true
+launch=true
 
 echo "[ Game Discovered as > $game ]"
 echo ""
