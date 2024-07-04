@@ -1,5 +1,6 @@
 # Dev Brainless / NoopRobs
 
+cd $(dirname $0)
 source data
 
 found_packages=()
