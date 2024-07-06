@@ -1,6 +1,7 @@
 # Dev Brainless / NoopRobs
 
 cd $(dirname $0)
+dos2unix data
 source data
 
 found_packages=()
@@ -172,7 +173,6 @@ am send-trim-memory --user 0 com.android.systemui RUNNING_CRITICAL
  fi
 
 
-setprops() {
 setprop debug.sf.hw 1
 setprop debug.egl.hw 1
 setprop debug.egl.sync 0
@@ -187,7 +187,7 @@ cmd power set-fixed-performance-mode-enabled true
 cmd power set-mode 0
 cmd thermalservice override-status 0
 cmd looper_stats disable
-}
+
 
 
 if pgrep -f "$game" > /dev/null;then
