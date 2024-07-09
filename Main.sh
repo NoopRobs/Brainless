@@ -184,11 +184,6 @@ am send-trim-memory --user 0 com.android.systemui RUNNING_CRITICAL
  else
    echo "[ Error Optimize SystemUi ! ]"
  fi
- 
-
-if $launch ; then
-    results+=($(launch_app))   
-fi
 
 
 # Set system properties for performance
