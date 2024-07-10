@@ -177,6 +177,11 @@ else
 fi
 
 
+if $launch ; then
+    results+=($(launch_app))   
+fi
+
+
 am send-trim-memory --user 0 com.android.systemui RUNNING_CRITICAL
  if [ "$?" -eq "0" ]; then
    echo "[ SytemUi Optimized ! ]" 
