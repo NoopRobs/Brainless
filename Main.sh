@@ -1,8 +1,6 @@
 cd $(dirname $0)
 source data
 
-echo "Now Running Module / Scipt !"
-
 found_packages=()
 for package in "${pkg[@]}"; do
     if pm list packages | grep -q "$package"; then
@@ -14,6 +12,7 @@ done
 game="${found_packages[0]}"
 id=($(cmd package dump "$game" | awk '/MAIN/{getline; print $2}'))
 status=$(am get-standby-bucket "$game")
+
 
 fps=($(settings get global fps))
 downscale=($(settings get global downscale))
@@ -31,14 +30,14 @@ height=$(echo $size | cut -d 'x' -f 2)
 
 launch_app () {
 if ls /sdcard/android/data/$game/files/dragon2017/assets/comlibs/armeabi-v7a; then
-   am start -S --user 0 "${id[0]}" --es --windowingMode 1 --no-window-animation --abi ARMEABI-V7A --splashscreen-icon
+   am start -D -N -S --user 0 "${id[0]}" --es --windowingMode 1 --no-window-animation --abi ARMEABI-V7A --splashscreen-icon
       if [ $? -eq 0 ]; then
          cmd notification post -S bigtext -t 'MLQL · Laxeron' 'Executed' 'Starting Mobile Legends with Armeabi-v7a !' > /dev/null 2>&1 &
      else
          echo "[ Can't start app or Error ! ]"
      fi
 else
-    am start -S --user 0 "${id[0]}" --es --windowingMode 1 --no-window-animation
+    am start -D -N -S --user 0 "${id[0]}" --es --windowingMode 1 --no-window-animation
        if [ $? -eq 0 ]; then
          cmd notification post -S bigtext -t 'MLQL · Laxeron' 'Executed' 'Starting APP, Enjoy your games !' > /dev/null 2>&1 &
      else
@@ -184,7 +183,7 @@ am send-trim-memory --user 0 com.android.systemui RUNNING_CRITICAL
  else
    echo "[ Error Optimize SystemUi ! ]"
  fi
-
+ 
 
 # Set system properties for performance
 setprop debug.sf.hw 1
