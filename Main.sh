@@ -1,4 +1,5 @@
 cd $(dirname $0)
+dos2unix data
 source data
 
 found_packages=()
