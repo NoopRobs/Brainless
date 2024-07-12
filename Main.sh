@@ -1,3 +1,5 @@
+#!/system/bin/sh
+
 cd $(dirname $0)
 dos2unix data
 source data
