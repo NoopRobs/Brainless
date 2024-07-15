@@ -59,111 +59,18 @@ case "$1" in
 esac
 
 
-#resolution size screen 
-for arg in "$@"; do
-    case "$arg" in
-        "100")
-            wm size reset
-            ;;
-        "75")
-            new_width=$(echo "$sizevalue" | cut -d'x' -f1)
-            new_height=$(echo "$sizevalue" | cut -d'x' -f2)
-            new_size="${new_width}*0.75x${new_height}*0.75"
-            wm size "$new_size"
-            ;;
-        "50")
-            new_width=$(echo "$sizevalue" | cut -d'x' -f1)
-            new_height=$(echo "$sizevalue" | cut -d'x' -f2)
-            new_size="${new_width}*0.50x${new_height}*0.50"
-            wm size "$new_size"
-            ;;
-        "30")
-            new_width=$(echo "$sizevalue" | cut -d'x' -f1)
-            new_height=$(echo "$sizevalue" | cut -d'x' -f2)
-            new_size="${new_width}*0.30x${new_height}*0.30"
-            wm size "$new_size"
-            ;;
-    esac
-done
-
-
-for arg in "$@"; do
-    case "$arg" in 
-        "-cmp")
-            cmd package compile -m speed -f "$game" -r -secondary-dex > /dev/null
-            if [ $? -eq 0 ]; then
-                echo "[ App Compiled! ]"
-            else
-                pm compile -m speed -f "$game" -r -secondary-dex > /dev/null
-                if [ $? -eq 0 ]; then
-                    echo "[ $game Compiled ! ]"
-                else
-                    echo "[ Can't Compile App or packagename not found! ]"
-                fi
-            fi
-            ;;
-        "-call")
-            echo "[ Call Function Now running... Please Wait! ]"
-            for pkg in $(cmd package list packages -s | cut -d ":" -f2); do
-                pm compile -m space-profile -f $pkg > /dev/null
-                    if [ $? -eq 0 ]; then
-                        echo "[ Bg App has been Compiled! ]"
-                    else
-                        echo "[ Can't Compile Bg App! ]"
-                    fi
-            done
-            ;;
-        "-dbs")
-            for debug in $(getprop | grep -F '[debug.' | cut -f 2 -d [ | cut -f 1 -d ]); do
-                setprop "$debug" ""
-            done
-            if [ $? -eq 0 ]; then
-                echo "[ Debug Values Deleted! ]"
-            else
-                echo "[ Can't delete debug values or error! ]"
-            fi              
-            ;;
-          "-svk")
-            if ls /system/lib/libvulkan.so > /dev/null 2>&1; then
-                setprop debug.hwui.renderer skiavk
-                setprop debug.renderengine.backend skiavkthreaded
-            else
-                echo "[ Device Not Support Vulkan Render ! ]"
-                return 0
-            fi   
-            ;;
-          "-vk")
-            if ls /system/lib/libvulkan.so > /dev/null; then
-              setprop debug.renderengine.backend vulkan
-          	setprop debug.hwui.renderer vulkan
-              echo "[ Vulkan Render Applied ! ]"      	
-           else
-          	echo "[ Device Not Support Vulkan Render ! ]"    
-          	return 0
-           fi
-            ;;
-          "-sk")
-             echo "[ Skip Quick Launch Option ! ]"
-             launch=false
-            ;;                        
-    esac   
-done
-
-
 launch_app () {
 if ls /sdcard/android/data/$game/files/dragon2017/assets/comlibs/armeabi-v7a; then
    am start -S --user 0 "${id[0]}" --es --windowingMode 1 --no-window-animation --abi ARMEABI-V7A --splashscreen-icon
       if [ $? -eq 0 ]; then
          cmd notification post -S bigtext -t 'MLQL · Laxeron' 'Executed' 'Starting Mobile Legends with Armeabi-v7a !' > /dev/null 2>&1 &
-     else
-         echo "[ Can't start app or Error ! ]"
-     fi
-else
-    am start -S --user 0 "${id[0]}" --es --windowingMode 1 --no-window-animation
-       if [ $? -eq 0 ]; then
-         cmd notification post -S bigtext -t 'MLQL · Laxeron' 'Executed' 'Starting APP, Enjoy your games !' > /dev/null 2>&1 &
-     else
-         echo "[ Can't start app or Error ! ]"
+     else         
+         am start -S --user 0 "${id[0]}" --es --windowingMode 1 --no-window-animation
+             if [ $? -eq 0 ]; then
+                 cmd notification post -S bigtext -t 'MLQL · Laxeron' 'Executed' 'Starting APP, Enjoy your games !' > /dev/null 2>&1 &
+             else
+                 echo "[ Can't start app or Error ! ]"
+             fi
      fi
 fi
 }
@@ -305,7 +212,98 @@ am send-trim-memory --user 0 com.android.systemui RUNNING_CRITICAL
  else
    echo "[ Error Optimize SystemUi ! ]"
  fi
- 
+
+
+ #resolution size screen 
+for arg in "$@"; do
+    case "$arg" in
+        "100")
+            wm size reset
+            ;;
+        "75")
+            new_width=$(echo "$sizevalue" | cut -d'x' -f1)
+            new_height=$(echo "$sizevalue" | cut -d'x' -f2)
+            new_size="${new_width}*0.75x${new_height}*0.75"
+            wm size "$new_size"
+            ;;
+        "50")
+            new_width=$(echo "$sizevalue" | cut -d'x' -f1)
+            new_height=$(echo "$sizevalue" | cut -d'x' -f2)
+            new_size="${new_width}*0.50x${new_height}*0.50"
+            wm size "$new_size"
+            ;;
+        "30")
+            new_width=$(echo "$sizevalue" | cut -d'x' -f1)
+            new_height=$(echo "$sizevalue" | cut -d'x' -f2)
+            new_size="${new_width}*0.30x${new_height}*0.30"
+            wm size "$new_size"
+            ;;
+    esac
+done
+
+
+for arg in "$@"; do
+    case "$arg" in 
+        "-cmp")
+            cmd package compile -m speed -f "$game" -r -secondary-dex > /dev/null
+            if [ $? -eq 0 ]; then
+                echo "[ App Compiled! ]"
+            else
+                pm compile -m speed -f "$game" -r -secondary-dex > /dev/null
+                if [ $? -eq 0 ]; then
+                    echo "[ $game Compiled ! ]"
+                else
+                    echo "[ Can't Compile App or packagename not found! ]"
+                fi
+            fi
+            ;;
+        "-call")
+            echo "[ Call Function Now running... Please Wait! ]"
+            for pkg in $(cmd package list packages -s | cut -d ":" -f2); do
+                pm compile -m space-profile -f $pkg > /dev/null
+                    if [ $? -eq 0 ]; then
+                        echo "[ Bg App has been Compiled! ]"
+                    else
+                        echo "[ Can't Compile Bg App! ]"
+                    fi
+            done
+            ;;
+        "-dbs")
+            for debug in $(getprop | grep -F '[debug.' | cut -f 2 -d [ | cut -f 1 -d ]); do
+                setprop "$debug" ""
+            done
+            if [ $? -eq 0 ]; then
+                echo "[ Debug Values Deleted! ]"
+            else
+                echo "[ Can't delete debug values or error! ]"
+            fi              
+            ;;
+          "-svk")
+            if ls /system/lib/libvulkan.so > /dev/null 2>&1; then
+                setprop debug.hwui.renderer skiavk
+                setprop debug.renderengine.backend skiavkthreaded
+            else
+                echo "[ Device Not Support Vulkan Render ! ]"
+                return 0
+            fi   
+            ;;
+          "-vk")
+            if ls /system/lib/libvulkan.so > /dev/null; then
+              setprop debug.renderengine.backend vulkan
+          	setprop debug.hwui.renderer vulkan
+              echo "[ Vulkan Render Applied ! ]"      	
+           else
+          	echo "[ Device Not Support Vulkan Render ! ]"    
+          	return 0
+           fi
+            ;;
+          "-sk")
+             echo "[ Skip Quick Launch Option ! ]"
+             launch=false
+            ;;                        
+    esac   
+done
+
 
 if $launch ; then
     results+=($(launch_app))   
