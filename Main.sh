@@ -11,23 +11,18 @@ for package in "${pkg[@]}"; do
     fi
 done
 
-
+# parameter gathered
 game="${found_packages[0]}"
 id=($(cmd package dump "$game" | awk '/MAIN/{getline; print $2}'))
 status=$(am get-standby-bucket "$game")
-
 fps=($(settings get global fps))
 downscale=($(settings get global downscale))
-
 renderer=$(getprop debug.hwui.renderer)
 renderengine=$(getprop debug.renderengine.backend)
-
 size=$(wm size)
 density=$(wm density)
-
 width=$(echo $size | cut -d 'x' -f 1)
 height=$(echo $size | cut -d 'x' -f 2)
-
 cmdgame=($(cmd -l | grep "game"))
 
 
@@ -169,6 +164,8 @@ am send-trim-memory --user 0 com.android.systemui RUNNING_CRITICAL
  
 
 # Set system properties for performance
+setprop debug.cpurend.vsync false
+setprop debug.egl.force_msaa false
 setprop debug.sf.hw 1
 setprop debug.egl.hw 1
 setprop debug.egl.sync 0
@@ -183,5 +180,6 @@ cmd power set-fixed-performance-mode-enabled true
 cmd power set-mode 0
 cmd thermalservice override-status 0
 cmd looper_stats disable
-
-
+settings put secure game_auto_tempature 0
+settings put secure speed_mode_enable 1
+settings put system speed_mode 1
