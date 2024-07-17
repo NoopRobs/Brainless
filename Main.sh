@@ -1,8 +1,7 @@
-#!/system/bin/sh
-
 cd $(dirname $0)
-dos2unix data
 source data
+
+pkg=("com.mobile.legends" "com.mobilelegendsmi" "com.mobilelegends.hwag" "com.mobilelegends.taptest" "com.dfjz.moba")
 
 found_packages=()
 for package in "${pkg[@]}"; do
@@ -11,7 +10,6 @@ for package in "${pkg[@]}"; do
     fi
 done
 
-# parameter gathered
 game="${found_packages[0]}"
 id=($(cmd package dump "$game" | awk '/MAIN/{getline; print $2}'))
 status=$(am get-standby-bucket "$game")
@@ -24,7 +22,6 @@ density=$(wm density)
 width=$(echo $size | cut -d 'x' -f 1)
 height=$(echo $size | cut -d 'x' -f 2)
 cmdgame=($(cmd -l | grep "game"))
-
 
 # Set properties
 case "$1" in
@@ -58,25 +55,54 @@ case "$1" in
        ;;
 esac
 
-
 launch_app () {
-if ls /sdcard/android/data/$game/files/dragon2017/assets/comlibs/armeabi-v7a; then
-   am start -S --user 0 "${id[0]}" --es --windowingMode 1 --no-window-animation --abi ARMEABI-V7A --splashscreen-icon
-      if [ $? -eq 0 ]; then
-         cmd notification post -S bigtext -t 'MLQL · Laxeron' 'Executed' 'Starting Mobile Legends with Armeabi-v7a !' > /dev/null 2>&1 &
-     else         
-         am start -S --user 0 "${id[0]}" --es --windowingMode 1 --no-window-animation
-             if [ $? -eq 0 ]; then
-                 cmd notification post -S bigtext -t 'MLQL · Laxeron' 'Executed' 'Starting APP, Enjoy your games !' > /dev/null 2>&1 &
-             else
-                 echo "[ Can't start app or Error ! ]"
-             fi
-     fi
+if ls /sdcard/android/data/$game/files/dragon2017/assets/comlibs/armeabi-v7a > /dev/null; then
+    am start -S --user 0 "${id[0]}" --es --windowingMode 1 --no-window-animation --abi ARMEABI-V7A
+        if [ $? -eq 0 ]; then
+            cmd notification post -S bigtext -t 'MLQL · Laxeron' 'Executed' 'Starting Mobile Legends with Armeabi-v7a !' > /dev/null 2>&1 &
+        else
+            am start -S --user 0 "${id[0]}" --es --windowingMode 1 --no-window-animation
+                if [ $? -eq 0 ]; then
+                    cmd notification post -S bigtext -t 'MLQL · Laxeron' 'Executed' 'Starting APP, Enjoy your games !' > /dev/null 2>&1 &
+                else
+                    echo "[ Can't start app or Error ! ]"
+                fi
+        fi
 fi
 }
 launch=true
 
+for arg  in "$@"; do
+    case "$arg" in
+        "-dbs")
+            for debug in $(getprop | grep -F '[debug.' | cut -f 2 -d [ | cut -f 1 -d ]); do
+                setprop "$debug" ""
+            done
+            ;;
+          "-svk")
+            if ls /system/lib/libvulkan.so > /dev/null 2>&1; then
+                setprop debug.hwui.renderer skiavk
+                setprop debug.renderengine.backend skiavkthreaded
+            else
+                echo "[ Device Not Support Vulkan Render ! ]"
+            fi   
+            ;;
+          "-vk")
+            if ls /system/lib/libvulkan.so > /dev/null; then
+                setprop debug.renderengine.backend vulkan
+            	setprop debug.hwui.renderer vulkan
+                echo "[ Vulkan Render Applied ! ]"      	
+           else
+          	echo "[ Device Not Support Vulkan Render ! ]"    
+           fi
+            ;;
+           "-sk")
+               launch=false
+            ;;
+    esac
+done
 
+echo ""
 echo "[ Game Discovered as > $game ]"
 echo ""
 
@@ -95,12 +121,9 @@ else
 fi
 
 echo ""
-
 echo "[ Current renderer > $renderer ! ]"
 echo "[ Current Render Engine > $renderengine ! ]"
-echo "• You can change render by using Render Option !"
 echo ""
-
 
 if  [ -z $downscale ]; then
     echo "[ There is no saved value, Please add value on next Argument ! ]"
@@ -118,7 +141,6 @@ else
     echo ""
 fi
 
-
 # Reset app throttling
 cmd shortcut reset-throttling "$game" > /dev/null
 if [ $? -eq 0 ]; then
@@ -126,7 +148,6 @@ if [ $? -eq 0 ]; then
 else
     echo "[ Failed to reset App Throttle ! ]"
 fi
-
 
 cmd shortcut reset-all-throttling "$game" > /dev/null
 if [ $? -eq 0 ]; then
@@ -136,7 +157,9 @@ else
 fi
 
 # Clear caches
-(for a in $(pm list packages -U|grep -v $game|cut -f3 -d:);do pm trim-caches 99G "$a"&done)>/dev/null 2>&1&
+for a in $(pm list packages -U|grep -v $game|cut -f3 -d:); do
+    pm trim-caches 99G "$a"& 
+done
 
 # Set device to idle
 {
@@ -150,12 +173,10 @@ if dumpsys deviceidle | grep -q "$game"; then
     echo "[ $game already in whitelist ]"
 else
     echo "[ $game is not listed ]"
-    sleep 1
     cmd deviceidle whitelist +$game > /dev/null
     echo "[ $game Added to Whitelist. ]"
 fi
 
-                  
 # Compile system ui
 cmd package compile -m quicken -f com.android.systemui > /dev/null
     if [ $? -eq 0 ]; then
@@ -169,7 +190,6 @@ cmd package compile -m quicken -f com.android.systemui > /dev/null
         fi
     fi
 
-
 # Apply device config
 device_config delete game_overlay "$game" > /dev/null
   if [ $? -eq 0 ]; then  
@@ -179,11 +199,11 @@ device_config delete game_overlay "$game" > /dev/null
      echo ""
   fi
     
-
 # Set game mode and performance settings
 if [ -z "$cmdgame" ]; then
-     echo "[ Cmd Game not supported on this Device! ]"
+     echo "[ Cmd Game not supported on this Device ! ]"
 else
+     cmd game mode performance $game
      cmd game set --mode performance --downscale "$downscale" --fps "$fps" --user 0 "$game" > /dev/null
           if [ $? -eq 0 ]; then
                echo "[ Cmd Game Applied! ]"
@@ -191,7 +211,6 @@ else
                echo "[ Cmd Game not supported on this Device! ]"
           fi
 fi
-
 
 # Set standby mode
 if [ "$status" -ne 10 ]; then
@@ -205,7 +224,6 @@ else
     echo "[ $game is already in Standby Mode! ]"
 fi
 
-
 am send-trim-memory --user 0 com.android.systemui RUNNING_CRITICAL
  if [ "$?" -eq "0" ]; then
    echo "[ SytemUi Optimized ! ]" 
@@ -213,8 +231,7 @@ am send-trim-memory --user 0 com.android.systemui RUNNING_CRITICAL
    echo "[ Error Optimize SystemUi ! ]"
  fi
 
-
- #resolution size screen 
+#resolution size screen 
 for arg in "$@"; do
     case "$arg" in
         "100")
@@ -241,15 +258,14 @@ for arg in "$@"; do
     esac
 done
 
-
 for arg in "$@"; do
     case "$arg" in 
         "-cmp")
-            cmd package compile -m speed -f "$game" -r -secondary-dex > /dev/null
+            cmd package compile -m speed -f "$game" > /dev/null
             if [ $? -eq 0 ]; then
-                echo "[ App Compiled! ]"
+                echo "[ $game Compiled ! ]"
             else
-                pm compile -m speed -f "$game" -r -secondary-dex > /dev/null
+                pm compile -m speed -f "$game" > /dev/null
                 if [ $? -eq 0 ]; then
                     echo "[ $game Compiled ! ]"
                 else
@@ -262,53 +278,32 @@ for arg in "$@"; do
             for pkg in $(cmd package list packages -s | cut -d ":" -f2); do
                 pm compile -m space-profile -f $pkg > /dev/null
                     if [ $? -eq 0 ]; then
-                        echo "[ Bg App has been Compiled! ]"
+                        echo "[ ${package} Compiled! ]"
                     else
-                        echo "[ Can't Compile Bg App! ]"
+                        echo "[ Can't Compile ${package} ! ]"
                     fi
             done
             ;;
-        "-dbs")
-            for debug in $(getprop | grep -F '[debug.' | cut -f 2 -d [ | cut -f 1 -d ]); do
-                setprop "$debug" ""
-            done
-            if [ $? -eq 0 ]; then
-                echo "[ Debug Values Deleted! ]"
-            else
-                echo "[ Can't delete debug values or error! ]"
-            fi              
+           "exe")
+               nohup sh auto.sh &
             ;;
-          "-svk")
-            if ls /system/lib/libvulkan.so > /dev/null 2>&1; then
-                setprop debug.hwui.renderer skiavk
-                setprop debug.renderengine.backend skiavkthreaded
-            else
-                echo "[ Device Not Support Vulkan Render ! ]"
-                return 0
-            fi   
-            ;;
-          "-vk")
-            if ls /system/lib/libvulkan.so > /dev/null; then
-              setprop debug.renderengine.backend vulkan
-          	setprop debug.hwui.renderer vulkan
-              echo "[ Vulkan Render Applied ! ]"      	
-           else
-          	echo "[ Device Not Support Vulkan Render ! ]"    
-          	return 0
-           fi
-            ;;
-          "-sk")
-             echo "[ Skip Quick Launch Option ! ]"
-             launch=false
-            ;;                        
+          "-exe")
+               pkill -9 -f sleep && pkill -9 -f run.sh
     esac   
 done
-
 
 if $launch ; then
     results+=($(launch_app))   
 fi
-
+    
+if pgrep -f "$game" > /dev/null;then
+   am clear-watch-heap $game 
+       if [ $? -eq 0 ]; then
+           echo "[ $game heap cleared ! ]"
+       else
+           echo "[ Can't clear $game heap ]"
+       fi
+fi
 
 # Set system properties for performance
 setprop debug.cpurend.vsync false
