@@ -1,8 +1,6 @@
 cd $(dirname $0)
 source data
 
-pkg=("com.mobile.legends" "com.mobilelegendsmi" "com.mobilelegends.hwag" "com.mobilelegends.taptest" "com.dfjz.moba")
-
 found_packages=()
 for package in "${pkg[@]}"; do
     if pm list packages | grep -q "$package"; then
@@ -24,6 +22,7 @@ height=$(echo $size | cut -d 'x' -f 2)
 cmdgame=($(cmd -l | grep "game"))
 
 # Set properties
+
 case "$1" in
     "0.5")
        settings put global downscale 0.5                  
