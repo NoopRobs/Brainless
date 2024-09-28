@@ -1,4 +1,4 @@
-echo 'game=$(pm list packages | grep -i "mobile.*legends" | sed  's/package://g')
+echo 'game=$(pm list packages | "mobile.*legends" | sed  's/package://g')
 id=($(cmd package dump "$game" | awk '/MAIN/{getline; print $2}'))
 
 compile() {
