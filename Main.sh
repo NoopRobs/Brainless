@@ -1,11 +1,10 @@
-Axeron.exec(`
-game=$(pkglist | grep "mobile.*legends")
+echo 'game=$(pm list packages | grep -i "mobile" | grep -i "legends" | sed  's/package://g')
 id=($(cmd package dump "$game" | awk '/MAIN/{getline; print $2}'))
 
 compile() {
-    if cmd package compile -m speed -f "$game" --primary-dex --secondary-dex --include-dependencies --full -p PRIORITY_INTERACTIVE_FASTl || \
-       pm compile -m speed -f "$game" --primary-dex --secondary-dex --include-dependencies --full -p PRIORITY_INTERACTIVE_FAST
-    fi
+     cmd package compile -m speed -f "$game" --primary-dex --secondary-dex --include-dependencies --full -p PRIORITY_INTERACTIVE_FASTl || \
+     pm compile -m speed -f "$game" --primary-dex --secondary-dex --include-dependencies --full -p PRIORITY_INTERACTIVE_FAST
+    
 }
 
 armeabi_v7a() {
@@ -24,10 +23,10 @@ ql() {
     --no-window-animation $abi_flag
 
     cmd notification post -t "Quick Launch" -S inbox \
-    --line "App Launch in $abi" \
+    --line "App Running in $abi" \
     --line "This is simplified version of MLQL" \
     --line "Feedback for bugs or errors" \
-    myTag "MLQL by @Brainless"
+    myTag "Game Launcher"
 }
 
 for pkg in $(pm list packages -U | grep -v $game | cut -f3 -d:); do
@@ -36,9 +35,8 @@ done
 
 cmd shortcut reset-throttling || cmd shortcut reset-all-throttling
 
-compile; sleep 1; ql
+ql
 
 if [ -n "$(dumpsys activity top | grep "$game")" ] ; then
    am clear-watch-heap $game
-fi
-  `);
+fi' > /data/local/tmp/brain
