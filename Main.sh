@@ -1,4 +1,4 @@
-echo 'game=$(pm list packages | "mobile.*legends" | sed  's/package://g')
+game=$(pm list packages | "mobile.*legends" | sed  's/package://g')
 id=($(cmd package dump "$game" | awk '/MAIN/{getline; print $2}'))
 
 compile() {
@@ -39,4 +39,4 @@ ql
 
 if [ -n "$(dumpsys activity top | grep "$game")" ] ; then
    am clear-watch-heap $game
-fi' > /data/local/tmp/brain
+fi
