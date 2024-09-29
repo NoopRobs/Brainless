@@ -1,4 +1,4 @@
-game="$MODULE_PACKAGE"
+game="$MODULE_PKG"
 id=($(cmd package dump "$game" | awk '/MAIN/{getline; print $2}'))
 
 compile() {
