@@ -1,4 +1,4 @@
-game=$(pm list package | grep "mobile.*legends" | sed  's/package://g')
+game="$MODULE_PACKAGE"
 id=($(cmd package dump "$game" | awk '/MAIN/{getline; print $2}'))
 
 compile() {
