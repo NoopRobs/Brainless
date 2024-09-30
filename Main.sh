@@ -2,9 +2,8 @@ game="$MODULE_PKG"
 id=($(cmd package dump "$game" | awk '/MAIN/{getline; print $2}'))
 
 compile() {
-     cmd package compile -m speed -f "$game" --primary-dex --secondary-dex --include-dependencies --full -p PRIORITY_INTERACTIVE_FASTl || \
+     cmd package compile -m speed -f "$game" --primary-dex --secondary-dex --include-dependencies --full -p PRIORITY_INTERACTIVE_FAST || \
      pm compile -m speed -f "$game" --primary-dex --secondary-dex --include-dependencies --full -p PRIORITY_INTERACTIVE_FAST
-    
 }
 
 armeabi_v7a() {
@@ -24,9 +23,8 @@ ql() {
 
     cmd notification post -t "Quick Launch" -S inbox \
     --line "App Running in $abi" \
-    --line "This is simplified version of MLQL" \
     --line "Feedback for bugs or errors" \
-    myTag "Game Launcher"
+    myTag "Quick Launch - Brainless"
 }
 
 for pkg in $(pm list packages -U | grep -v $game | cut -f3 -d:); do
@@ -35,7 +33,7 @@ done
 
 cmd shortcut reset-throttling || cmd shortcut reset-all-throttling
 
-ql
+compile; sleep 1; ql
 
 if [ -n "$(dumpsys activity top | grep "$game")" ] ; then
    am clear-watch-heap $game
