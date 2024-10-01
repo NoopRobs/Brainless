@@ -3,7 +3,7 @@ id=($(cmd package dump "$game" | awk '/MAIN/{getline; print $2}'))
 
 compile() {
      cmd package compile -m speed -f "$game" --primary-dex --secondary-dex --include-dependencies --full -p PRIORITY_INTERACTIVE_FAST || \
-     pm compile -m speed -f "$game" --primary-dex --secondary-dex --include-dependencies --full -p PRIORITY_INTERACTIVE_FAST
+     pm compile -m speed-profile -f "$game" --primary-dex --secondary-dex --include-dependencies --full -p PRIORITY_INTERACTIVE_FAST
 }
 
 armeabi_v7a() {
