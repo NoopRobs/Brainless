@@ -2,10 +2,9 @@ game="$MODULE_PKG"
 id=($(cmd package dump "$game" | awk '/MAIN/{getline; print $2}'))
 
 compile() {
-     cmd package compile -m speed -f "$game" --primary-dex --secondary-dex --include-dependencies --full -p PRIORITY_INTERACTIVE_FAST || \
-     pm compile -m speed-profile -f "$game" --primary-dex --secondary-dex --include-dependencies --full -p PRIORITY_INTERACTIVE_FAST
+     cmd package compile -m speed -f "$game" --primary-dex --secondary-dex --include-dependencies --full -p PRIORITY_INTERACTIVE_FAST
 }
-
+     
 armeabi_v7a() {
     apk_path=$(pm path "$game" | sed 's/package://')
     unzip -l "$apk_path" | grep -q "lib/armeabi-v7a/" && echo "32-bit"
