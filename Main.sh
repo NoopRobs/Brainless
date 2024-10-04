@@ -21,10 +21,6 @@ ql() {
     myTag "Quick Launch - Brainless"
 }
 
-
-
-buat agar string ini lebih fleksible pada device" lain
-
 for pkg in $(pm list packages -U | grep -v $game | cut -f3 -d:); do
     pm trim-caches 99G "$pkg" &
 done
