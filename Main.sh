@@ -11,26 +11,15 @@ armeabi_v7a() {
 }
 
 ql() {
-    abi=$(getprop ro.product.cpu.abi)
-    abi_flag=""
-    
-    # Check for 32-bit ARM architecture
-    if [ "$abi" = "armeabi-v7a" ]; then
-        abi_flag="--abi ARMEABI-V7A"
-        abi="32-bit"
-    else
-        abi="64-bit"
-    fi
+    abi=$(armeabi_v7a || echo "64-bit")
+    abi_flag=$([ "$abi" = "32-bit" ] && echo "--abi ARMEABI-V7A")
 
-    # Start the app with flexible flags
-    am start -S --user 0 "${id[0]}" \
-    --ez android.intent.extra.disable_battery_optimization true \
-    --ez android.intent.extra.enable_gpu_acceleration true \
-    --ez android.intent.extra.priority true \
-    --activity-clear-task --no-window-animation \
-    $abi_flag
+    am start -S --user 0 "${id[0]}" --ez --activity-clear-task --no-window-animation \
+    android.intent.extra.disable_battery_optimization true \
+    android.intent.extra.enable_gpu_acceleration true \
+    android.intent.extra.priority true \
+    --no-window-animation $abi_flag
 
-    # Post notification
     cmd notification post -t "Quick Launch" -S inbox \
     --line "App Running in $abi" \
     --line "Feedback for bugs or errors" \
