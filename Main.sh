@@ -12,7 +12,7 @@ armeabi_v7a() {
 
 ql() {
     # Array of game package name
-abi=$(dumpsys package "$pkg" | grep primaryCpuAbi | cut -d "=" -f2)
+abi=$(dumpsys package "$game" | grep primaryCpuAbi | cut -d "=" -f2)
 
 case "$abi" in
   "armeabi-v7a")
