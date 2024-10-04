@@ -5,7 +5,7 @@ compile() {
      cmd package compile -m speed -f "$game" --primary-dex --secondary-dex --include-dependencies --full -p PRIORITY_INTERACTIVE_FAST
 }
      
-ql() {
+armeabi_v7a () {
     armeabi_v7a() {
     apk_path=$(pm path $game | sed 's/package://g')
     armeabi_v7a_apps=()
