@@ -6,7 +6,6 @@ compile() {
 }
      
 armeabi_v7a () {
-    armeabi_v7a() {
     apk_path=$(pm path $game | sed 's/package://g')
     armeabi_v7a_apps=()
 
