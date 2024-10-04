@@ -19,7 +19,7 @@ armeabi_v7a () {
 
     echo "${armeabi_v7a_apps[@]}"
 }
-armeabi_v7a
+abi=($(armeabi_v7a))
 
 launch_app() {
     am start -S --user 0 "${id[0]}" --ez --activity-clear-task --no-window-animation \
