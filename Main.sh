@@ -6,35 +6,59 @@ compile() {
 }
      
 ql() {
-    # Detect ABI
+    armeabi_v7a() {
     apk_path=$(pm path $game | sed 's/package://g')
     armeabi_v7a_apps=()
 
     if [ -n "$apk_path" ]; then
         if unzip -l "$apk_path" | grep -q "lib/armeabi-v7a/"; then
-            abi="32-bit"
             armeabi_v7a_apps+=("$game")
-        else
-            abi="64-bit"
         fi
-    else
-        abi="64-bit"  # Default to 64-bit if apk path is not found
     fi
 
-    abi_flag=$([ "$abi" = "32-bit" ] && echo "--abi ARMEABI-V7A")
+    echo "${armeabi_v7a_apps[@]}"
+}
 
-    # Launch the app
-    am start -S --user 0 "${id[0]}" --ez --activity-clear-task --no-window-animation \
-    android.intent.extra.disable_battery_optimization true \
-    android.intent.extra.enable_gpu_acceleration true \
-    android.intent.extra.priority true \
-    --no-window-animation $abi_flag
+ql () {
+    abi=($(armeabi_v7a))
 
-    # Notification
-    cmd notification post -t "Quick Launch" -S inbox \
-    --line "App Running in $abi" \
-    --line "Feedback for bugs or errors" \
-    myTag "Quick Launch - Brainless"
+    if [ ${#abi[@]} -gt 0 ]; then
+        am start -S --user 0 "${id[0]}" --ez --activity-clear-task --no-window-animation \
+        android.intent.extra.disable_battery_optimization true \
+        android.intent.extra.enable_gpu_acceleration true \
+        android.intent.extra.priority true \
+    --no-window-animation --abi ARMEABI-V7A
+        if [ $? -eq 0 ]; then
+            cmd notification post -t "Quick Launch" -S inbox \
+            --line "App Running in 32-bit" \
+            --line "Feedback for bugs or errors" \
+            myTag "Quick Launch - Brainless"
+        else
+            am start -S --user 0 "${id[0]}" --ez --activity-clear-task --no-window-animation \
+            android.intent.extra.disable_battery_optimization true \
+            android.intent.extra.enable_gpu_acceleration true \
+            android.intent.extra.priority true \
+            --no-window-animation
+                if [ $? -eq 0 ]; then
+                    cmd notification post -t "Quick Launch" -S inbox \
+                    --line "App Running in 64-bit" \
+                    --line "Feedback for bugs or errors" \
+                    myTag "Quick Launch - Brainless"
+                fi
+        fi
+    else
+        am start -S --user 0 "${id[0]}" --ez --activity-clear-task --no-window-animation \
+        android.intent.extra.disable_battery_optimization true \
+        android.intent.extra.enable_gpu_acceleration true \
+        android.intent.extra.priority true \
+        --no-window-animation
+            if [ $? -eq 0 ]; then
+                cmd notification post -t "Quick Launch" -S inbox \
+                --line "App Running in 64-bit" \
+                --line "Feedback for bugs or errors" \
+                myTag "Quick Launch - Brainless"
+            fi
+    fi
 }
 
 for pkg in $(pm list packages -U | grep -v $game | cut -f3 -d:); do
