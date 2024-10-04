@@ -11,19 +11,42 @@ armeabi_v7a() {
 }
 
 ql() {
-    abi=$(armeabi_v7a || echo "64-bit")
-    abi_flag=$([ "$abi" = "32-bit" ] && echo "--abi ARMEABI-V7A")
+    # Array of game package name
+abi=$(dumpsys package "$pkg" | grep primaryCpuAbi | cut -d "=" -f2)
 
-    am start -S --user 0 "${id[0]}" --ez --activity-clear-task --no-window-animation \
-    android.intent.extra.disable_battery_optimization true \
-    android.intent.extra.enable_gpu_acceleration true \
-    android.intent.extra.priority true \
-    --no-window-animation $abi_flag
+case "$abi" in
+  "armeabi-v7a")
+     abi="32-bit
+     abi_flag="--abi ARMEABI-V7A"
+  ;;
+   "arm64-v8a")
+     abi="64-bit"
+     abi_flag="
+  ;;
+ "x86")
+     abi="32-bit (x86)"
+     abi_flag="--abi x86"
+;;
+  "x86_64")
+     abi="64-bit (x86)"
+     abi_flag=""
+;;
+esac
 
-    cmd notification post -t "Quick Launch" -S inbox \
-    --line "App Running in $abi" \
-    --line "Feedback for bugs or errors" \
-    myTag "Quick Launch - Brainless"
+ # Start the app with flexible flags
+am start -S --user 0 "$pkg" \
+--ez android.intent.extra.disable_battery_optimization true \
+--ez android.intent.extra.enable_gpu_acceleration true \
+--ez android.intent.extra.priority true \
+--activity-clear-task --no-window-animation \
+$abi_flag
+
+# Post notification
+cmd notification post -t "Quick Launch" -S inbox \
+--line "App Running in $abi" \
+--line "Feedback for bugs or errors" \
+myTag "Quick Launch - Brainless"
+done
 }
 
 for pkg in $(pm list packages -U | grep -v $game | cut -f3 -d:); do
@@ -32,7 +55,7 @@ done
 
 cmd shortcut reset-throttling || cmd shortcut reset-all-throttling
 
-compile; sleep 1; ql
+sleep 1; ql
 
 if [ -n "$(dumpsys activity top | grep "$game")" ] ; then
    am clear-watch-heap $game
