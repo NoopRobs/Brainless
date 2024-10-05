@@ -10,25 +10,20 @@ compile() {
 compile; sleep 0.5
 
 ql () {
-am start -S --user 0 "${id[0]}" --ez --activity-clear-task --no-window-animation \
-android.intent.extra.disable_battery_optimization true \
-android.intent.extra.enable_gpu_acceleration true \
-android.intent.extra.priority true \
---no-window-animation
+am start -S --user 0 "${id[0]}" --activity-clear-task --no-window-animation \
+--ez android.intent.extra.disable_battery_optimization true \
+--ez android.intent.extra.enable_gpu_acceleration true \
+--ez android.intent.extra.priority true
 }
 
-test () {
-am start -S --user 0 "${id[0]}"
-}
-
-test --abi ARMEABI_V7A
+ql --abi ARMEABI_V7A
 if [ $? -eq 0 ]; then
     cmd notification post -t "Quick Launch" -S inbox \
     --line "App Running in 32-bit" \
     --line "Feedback for bugs or errors" \
     myTag "Quick Launch - Brainless"
 else
-    test
+    ql
     cmd notification post -t "Quick Launch" -S inbox \
     --line "App Running in 64-bit" \
     --line "Feedback for bugs or errors" \
