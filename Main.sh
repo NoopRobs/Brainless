@@ -17,7 +17,7 @@ android.intent.extra.priority true \
 --no-window-animation
 }
 
-tesr () {
+test () {
 am start -S --user 0
 }
 
