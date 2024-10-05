@@ -17,14 +17,18 @@ android.intent.extra.priority true \
 --no-window-animation
 }
 
-ql --abi ARMEABI_V7A
+tesr () {
+am start -S --user 0
+}
+
+test --abi ARMEABI_V7A
 if [ $? -eq 0 ]; then
     cmd notification post -t "Quick Launch" -S inbox \
     --line "App Running in 32-bit" \
     --line "Feedback for bugs or errors" \
     myTag "Quick Launch - Brainless"
 else
-    ql
+    test
     cmd notification post -t "Quick Launch" -S inbox \
     --line "App Running in 64-bit" \
     --line "Feedback for bugs or errors" \
