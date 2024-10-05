@@ -29,6 +29,8 @@ ql() {
     myTag "Quick Launch - Brainless"
 }
 
+ql
+
 if [ -n "$(dumpsys activity top | grep "$game")" ] ; then
    am clear-watch-heap $game
 fi
