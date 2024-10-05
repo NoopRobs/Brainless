@@ -18,7 +18,7 @@ android.intent.extra.priority true \
 }
 
 test () {
-am start -S --user 0
+am start -S --user 0 "${id[0]}"
 }
 
 test --abi ARMEABI_V7A
