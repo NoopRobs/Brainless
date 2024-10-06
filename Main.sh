@@ -1,3 +1,5 @@
+#!/bin/bash
+
 game="$MODULE_PKG"
 id=($(cmd package dump "$game" | awk '/MAIN/{getline; print $2}'))
 
@@ -18,7 +20,7 @@ ql() {
 }
 
 ql --abi ARMEABI_V7A
-if [ $? -eq 0 ]; then
+if [[ $? -eq 0 ]]; then
     abi_status="32-bit"
 else
     abi_status="64-bit"
@@ -30,6 +32,6 @@ cmd notification post -t "Quick Launch - $abi_status" -S inbox \
 --line "Feedback for bugs or errors" \
 myTag "Quick Launch - Brainless"
 
-if dumpsys activity top | grep -q "$game"; then
+if [[ dumpsys activity top | grep -q "$game" ]]; then
    am clear-watch-heap $game
 fi
