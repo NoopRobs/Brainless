@@ -10,7 +10,7 @@ compile() {
 compile
 sleep 0.5
 
-ql () {
+ql() {
     am start -S --user 0 "${id[0]}" --activity-clear-task --no-window-animation \
     --ez android.intent.extra.disable_battery_optimization true \
     --ez android.intent.extra.enable_gpu_acceleration true \
