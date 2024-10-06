@@ -9,27 +9,26 @@ compile() {
 
 compile, sleep 0.5    
 
-armeabi_v7a() {
-    apk_path=$(pm path "$game" | sed 's/package://')
-    unzip -l "$apk_path" | grep -q "lib/armeabi-v7a/" &> /dev/null && echo "32-bit"
+ql () {
+am start -S --user 0 "${id[0]}" --activity-clear-task --no-window-animation \
+--ez android.intent.extra.disable_battery_optimization true \
+--ez android.intent.extra.enable_gpu_acceleration true \
+--ez android.intent.extra.priority true \
 }
 
-ql() {
-    abi=$(armeabi_v7a || echo "64-bit")
-    abi_flag=$([ "$abi" = "32-bit" ] && echo "--abi ARMEABI-V7A")
-
-    am start -S --user 0 "${id[0]}" --activity-clear-task --no-window-animation \
-    --ez android.intent.extra.disable_battery_optimization true \
-    --ez android.intent.extra.enable_gpu_acceleration true \
-    --ez android.intent.extra.priority true $abi_flag
-
+ql --abi ARMEABI_V7A
+if [ $? -eq 0 ]; then
     cmd notification post -t "Quick Launch" -S inbox \
-    --line "App Running in $abi" \
+    --line "App Running in 32-bit" \
     --line "Feedback for bugs or errors" \
     myTag "Quick Launch - Brainless"
-}
-
-ql
+else
+    ql
+    cmd notification post -t "Quick Launch" -S inbox \
+    --line "App Running in 64-bit" \
+    --line "Feedback for bugs or errors" \
+    myTag "Quick Launch - Brainless"
+fi
 
 if [ -n "$(dumpsys activity top | grep "$game")" ] ; then
    am clear-watch-heap $game
