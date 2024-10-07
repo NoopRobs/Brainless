@@ -5,9 +5,7 @@ id=($(pm dump $game | grep -o "$game/[^ ]*" | grep -i "main" | sort -u | head -n
 
 cmd shortcut reset-throttling && cmd shortcut reset-all-throttling
 
-compile() {
-     cmd package compile -m speed-profile -f "$game" --primary-dex --secondary-dex --include-dependencies --full -p PRIORITY_INTERACTIVE_FAST
-}
+cmd package compile -m speed-profile -f "$game" --primary-dex --secondary-dex --include-dependencies --full -p PRIORITY_INTERACTIVE_FAST
 
 compile
 sleep 0.5
