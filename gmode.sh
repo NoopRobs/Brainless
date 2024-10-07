@@ -1,6 +1,6 @@
 game="$MODULE_PKG"
 
-device_config put game_overlay $game mode=2,downscaleFactor=0.3,fps=120
+device_config put game_overlay $game mode=2,downscaleFactor=0.3,fps=120,useAngle=true,LoadingBoost=1
 
   if [ -z cmd -l | grep -wo "game"]; then
       echo "empty"
