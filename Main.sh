@@ -1,14 +1,11 @@
 #!/bin/bash
 
 game="$MODULE_PKG"
-id=($(pm dump $game | grep -o "$game/[^ ]*"))
+id=($(dumpsys package "$game" | grep -A 1 "MAIN" | grep "$game/" | awk '{print $2}' | xargs))
 
 cmd shortcut reset-throttling && cmd shortcut reset-all-throttling
 
 cmd package compile -m speed-profile -f "$game" --primary-dex --secondary-dex --include-dependencies --full -p PRIORITY_INTERACTIVE_FAST
-
-compile
-sleep 0.5
 
 ql() {
     am start -S --user 0 "${id[0]}" --activity-clear-task --no-window-animation \
