@@ -1,7 +1,7 @@
 #!/bin/bash
 
 game="$MODULE_PKG"
-id=($(pm dump $game | grep -o "$game/[^ ]*" | grep -i "main" | sort -u | head -n 1))
+id=($(pm dump $game | grep -o "$game/[^ ]*"))
 
 cmd shortcut reset-throttling && cmd shortcut reset-all-throttling
 
