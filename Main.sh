@@ -1,7 +1,7 @@
 #!/bin/bash
 
 game="$MODULE_PKG"
-id=($(dumpsys package "$game" | grep -A 1 "MAIN" | grep "$game/" | awk '{print $2}' | xargs))
+id=$(dumpsys package "$game" | grep -A 1 "MAIN" | grep "$game/" | awk '{print $2}' | xargs | cut -d '/' -f2 | cut -d '1' -f1)
 
 cmd shortcut reset-throttling && cmd shortcut reset-all-throttling
 
