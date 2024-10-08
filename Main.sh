@@ -1,8 +1,9 @@
 #!/bin/bash
 
 game="$MODULE_PKG"
-id=$(dumpsys package "$game" | grep -A 1 "MAIN" | grep "$game/" | awk '{print $2}' | xargs | cut -d '/' -f2 | cut -d '1' -f1)
+id=$(dumpsys package "$game" | grep -A 1 "MAIN" | grep "$game/" | awk '{print $2}' | xargs | sed 's/.*\/[^0-9]*[0-9].*/\1/')
 
+echo "$id"
 cmd shortcut reset-throttling && cmd shortcut reset-all-throttling
 
 cmd package compile -m speed-profile -f "$game" --primary-dex --secondary-dex --include-dependencies --full -p PRIORITY_INTERACTIVE_FAST
