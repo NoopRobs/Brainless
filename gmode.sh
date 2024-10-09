@@ -28,11 +28,13 @@ fi
 dumpsys deviceidle whitelist | grep -p "$game" || dumpsys deviceidle whitelist +"$game"
 
 
-cmd looper_stats disable
-cmd power set-adaptive-power-saver-enabled false
-cmd power set-fixed-performance-mode-enabled true
-cmd power set-mode 0
-cmd thermalservice override-status 0
-dumpsys deviceidle enable
-dumpsys deviceidle force-idle
-dumpsys deviceidle step deep
+cmd looper_stats | grep -q "Looper stats disabled" || { echo "Disabling looper stats..."; cmd looper_stats disable; }
+cmd power get-adaptive-power-saver-enabled | grep -q "false" || { echo "Setting adaptive power saver to false..."; cmd power set-adaptive-power-saver-enabled false; }
+cmd power get-fixed-performance-mode-enabled | grep -q "true" || { echo "Enabling fixed performance mode..."; cmd power set-fixed-performance-mode-enabled true; }
+cmd power get-mode | grep -q "0" || { echo "Setting power mode to 0..."; cmd power set-mode 0; }
+cmd thermalservice get-override-status | grep -q "0" || { echo "Overriding thermal status to 0..."; cmd thermalservice override-status 0; }
+
+
+dumpsys deviceidle | grep -q "mLightEnabled=true" || { echo "Enabling device idle..."; dumpsys deviceidle enable; }
+dumpsys deviceidle | grep -q "mForceIdle=true" || { echo "Activating forced idle mode..."; dumpsys deviceidle force-idle; }
+dumpsys deviceidle step | grep -q "Light" || { echo "Stepping into light state..."; dumpsys deviceidle step d; }
