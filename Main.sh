@@ -14,14 +14,6 @@ ql() {
     --ez android.intent.extra.priority true
 }
 
-cache_dir="/data/data/$game/cache"
-if [[ -d "$cache_dir" ]];then
-    rm -rf $cache_dir/* 
-    log "Cache cleared for $game."
-else
-    log "No cache directory found for $game."
-fi
-
 ql --abi ARMEABI_V7A && abi_status="32-bit" || abi_status="64-bit" ql
 
 cmd notification post -t "Quick Launch - $abi_status" -S inbox \
