@@ -15,7 +15,12 @@ ql() {
 }
 
 cache_dir="/data/data/$game/cache"
--d "$cache_dir" && rm -rf $cache_dir/* log "Cache cleared for $game." || log "No cache directory found for $game."
+if [[ -d "$cache_dir" ]];then
+    rm -rf $cache_dir/* 
+    log "Cache cleared for $game."
+else
+    log "No cache directory found for $game."
+fi
 
 ql --abi ARMEABI_V7A && abi_status="32-bit" || abi_status="64-bit" ql
 
