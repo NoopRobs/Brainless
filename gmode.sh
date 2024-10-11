@@ -7,11 +7,7 @@ a=$(settings get global updatable_driver_production_opt_in_apps)
 device_config put game_overlay $game mode=2,downscaleFactor="$numz",fps="$hz",useAngle=true,LoadingBoost=1
 
 
-  if [ -z cmd -l | grep -wo "game"]; then
-      echo "empty"
-  else
-      cmd game set --mode 2 --fps "$hz" -downscale "$numz" --user 0 $game
-  fi
+cmd game set --mode 2 --fps "$hz" -downscale "$numz" --user 0 $game
 
 
 if [[ ls /system/lib/libvulkan.so ]]; then
