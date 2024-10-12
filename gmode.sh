@@ -1,6 +1,6 @@
 game="$MODULE_PKG"
-numz="$dscale"
-hz="$fps"
+numz="$1"
+hz="$2"
 a=$(settings get global updatable_driver_production_opt_in_apps)
 
 
