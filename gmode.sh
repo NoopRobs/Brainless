@@ -4,10 +4,10 @@ fps=$(echo "script.js" | jq -r '.fps[]')
 a=$(settings get global updatable_driver_production_opt_in_apps)
 
 
-device_config put game_overlay $game mode=2,downscaleFactor="$numz",fps="$hz",useAngle=true,LoadingBoost=1
+device_config put game_overlay $game mode=2,downscaleFactor="$dscale",fps="$fps",useAngle=true,LoadingBoost=1
 
 
-cmd game set --mode 2 --fps "$hz" -downscale "$numz" --user 0 $game
+cmd game set --mode 2 --fps "$fps" -downscale "$dscale" --user 0 $game
 
 
 if [[ ls /system/lib/libvulkan.so ]]; then
