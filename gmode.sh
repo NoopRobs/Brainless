@@ -1,8 +1,6 @@
-IFS=',' read -r -a array <<< "script.js"
-
 game="$MODULE_PKG"
-numz="$dscale"
-hz="$fps"
+dscale=$(echo "script.js" | jq -r '.dscale[]')
+fps=$(echo "script.js" | jq -r '.fps[]')
 a=$(settings get global updatable_driver_production_opt_in_apps)
 
 
