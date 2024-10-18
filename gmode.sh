@@ -6,7 +6,7 @@ fps="120"
 device_config put game_overlay $game mode=2,downscaleFactor="$dscale",fps="$fps",useAngle=true,LoadingBoost=1
 
 
-cmd game set --mode 2 --fps "$fps" -downscale "$dscale" --user 0 $game
+cmd game set --mode 2 --fps "$fps" --downscale "$dscale" --user 0 $game
 
 
 if [[ ls /system/lib/libvulkan.so ]]; then
@@ -17,7 +17,7 @@ fi
 
 
 if [[ "$a" != *"$game"* ]]; then
-    settings put global updatable_driver_production_opt_in_apps "$a,com.discord"
+    settings put global updatable_driver_production_opt_in_apps "$a,$game"
 fi
 
 
