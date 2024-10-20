@@ -17,7 +17,12 @@ ql() {
     --ez android.intent.extra.allow_background_activity_start false
 }
 
-ql --abi ARMEABI_V7A && abi_status="32-bit" || abi_status="64-bit" ql
+if ql --abi ARMEABI_V7A; then
+  abi_status="32-bit"
+else
+  ql
+  abi_status="64-bit"
+fi
 
 cmd notification post -t "Quick Launch - $abi_status" -S inbox \
 --line "App Running in $abi_status" \
