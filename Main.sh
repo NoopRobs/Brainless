@@ -14,7 +14,7 @@ ql() {
     --ez android.intent.extra.priority true \
     --ez android.intent.extra.ALLOW_IDLE_MODE true \
     --ez android.intent.extra.low_ram true \
-    --ez android.intent.extra.allow_background_activity_start false
+    --ez android.intent.extra.allow_background_activity_start false "$@"
 }
 
 if ql --abi ARMEABI_V7A; then
