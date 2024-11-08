@@ -30,4 +30,4 @@ cmd thermalservice override-status 0
 cmd looper_stats disable
 
 # Dropbox command (verify syntax with Android documentation)
-# cmd dropbox remove-low-priority "$game"
+cmd dropbox remove-low-priority "$game"
