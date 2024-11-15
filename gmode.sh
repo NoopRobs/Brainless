@@ -1,9 +1,8 @@
 game="$MODULE_PKG"
 a=$(settings get global updatable_driver_production_opt_in_apps)
-fps=$(settings get global fps)
 
 
-cmd device_config put game_overlay "$game" mode=2,downscaleFactor="$dscale",fps="$fps",useAngle=true,LoadingBoost=1
+cmd device_config put game_overlay "$game" mode=2,downscaleFactor="${dscale}",fps="${fps}",useAngle=true,LoadingBoost=1
 
 am set-standby-bucket "$game" ACTIVE
 
